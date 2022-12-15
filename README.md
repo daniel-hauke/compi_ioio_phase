@@ -49,6 +49,7 @@ Please, make sure that you have Matlab 2017a up and running.
 
 1. Open Matlab and navigate to the compi_ioio_phase folder.
 2. Run the `'compi_ioio_phase'` script from inside(!) this folder.
+3. Results figures shown in the paper will be saved in the compi_ioio_phase/results/figures_paper subfolder.
 
 
 Running statistics in R (requires running modelling first)
@@ -59,6 +60,7 @@ The statistics were run in R (version: 4.04; https://www.r-project.org/) using R
 1. Open R and navigate to the compi_ioio_phase folder.
 2. In all 4 statistic scripts located in the compi_ioio_phase/code/statistics subfolder set ```root_project = "path to project on your computer"```.
 3. Run statistic scripts.
+4. Results figures shown in the paper will be saved in the compi_ioio_phase/results/figures_paper subfolder.
 
 Acknowledgements
 ------------
