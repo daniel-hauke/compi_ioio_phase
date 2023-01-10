@@ -43,7 +43,7 @@ temp = read.xlsx(paste0(root_choices, fname_choices,'.xlsx'),
                      sheetIndex = 1)
 
 # Get choices
-choices = temp[,7:ncol(temp)]
+choices = temp[,9:ncol(temp)]
 rm(temp)
 
 # Load prob data
@@ -51,7 +51,7 @@ temp = read.xlsx(paste0(root_probs, fname_probs,'.xlsx'),
                      as.data.frame = T, 
                      header = T,
                      sheetIndex = 1)
-probs = temp[,7:ncol(temp)]
+probs = temp[,9:ncol(temp)]
 
 
 # Get other variables
@@ -63,16 +63,12 @@ group = factor(temp [,2],
                labels = c('HC','CHR-P','FEP'))
 
 # Covariates
-age = temp[,3]
+age = temp$age
 age_z = (age-mean(age))/sd(age)
-wm = temp[,4]
+wm = temp$wm
 wm_z = (wm-mean(wm))/sd(wm)
-antipsych = factor(temp[,5], 
-                   levels = c(0,1), 
-                   labels = c('no','yes'))
-antidep = factor(temp[,6], 
-                 levels = c(0,1), 
-                 labels = c('no','yes'))
+chlor_eq = temp$chlor_eq
+fluox_eq = temp$fluox_eq
 
 
 #---------------------------------------
@@ -87,9 +83,9 @@ AT_volatile_choice = rowMeans(choices[,trials_volatile],na.rm = T)
 
 
 # Prepare data
-data_wide_choice = data.frame(subjects, group, age_z, wm_z, antipsych, antidep, AT_stable_choice, AT_volatile_choice)
+data_wide_choice = data.frame(subjects, group, age_z, wm_z, chlor_eq, fluox_eq, AT_stable_choice, AT_volatile_choice)
 data_long_choice = melt(data_wide_choice,
-                 id.vars = c('subjects', 'group',  'age_z', 'wm_z', 'antipsych', 'antidep'),
+                 id.vars = c('subjects', 'group',  'age_z', 'wm_z', 'chlor_eq', 'fluox_eq'),
                  variable.name = 'phase',
                  value.name = 'AT')
 levels(data_long_choice$phase) = c('Stable', 'Volatile')
@@ -100,30 +96,53 @@ levels(data_long_choice$phase) = c('Stable', 'Volatile')
 #---------------------------------------
 # Statistical analysis: Phase
 cat('--------------------------\nAdvice Taking * phase\n--------------------------')
-m_choice = lmer(AT ~ group*phase  + wm_z + antipsych + antidep + age_z +(1|subjects), data = data_long_choice)
+m_choice = lmer(AT ~ group*phase + wm_z + age_z +(1|subjects), data = data_long_choice)
 Anova(m_choice, type = 'III', test.statistic = 'F')
 
 cat('--------------------------\nTest for normality\n--------------------------')
 shapiro.test(resid(m_choice))
 
 cat('--------------------------\nPosthoc tests\n--------------------------')
-m_choice_hc_chr = lmer(AT ~ group*phase  + wm_z + antipsych + antidep + age_z +(1|subjects), data = data_long_choice[data_long_choice$group!='FEP',])
+cat('----------------------\nHC vs CHR-P\n----------------------')
+m_choice_hc_chr = lmer(AT ~ group*phase  + wm_z + age_z +(1|subjects), data = data_long_choice[data_long_choice$group!='FEP',])
 Anova(m_choice_hc_chr, type = 'III', test.statistic = 'F')
 
-m_choice_hc_fep = lmer(AT ~ group*phase  + wm_z + antipsych + antidep + age_z +(1|subjects), data = data_long_choice[data_long_choice$group!='CHR-P',])
+cat('----------------------\nHC vs FEP\n----------------------')
+m_choice_hc_fep = lmer(AT ~ group*phase  + wm_z + age_z +(1|subjects), data = data_long_choice[data_long_choice$group!='CHR-P',])
 Anova(m_choice_hc_fep, type = 'III', test.statistic = 'F')
 
-m_choice_chr_fep = lmer(AT ~ group*phase  + wm_z + antipsych + antidep + age_z +(1|subjects), data = data_long_choice[data_long_choice$group!='HC',])
+cat('----------------------\nFEP vs CHR-P\n----------------------')
+m_choice_chr_fep = lmer(AT ~ group*phase  + wm_z + age_z +(1|subjects), data = data_long_choice[data_long_choice$group!='HC',])
 Anova(m_choice_chr_fep, type = 'III', test.statistic = 'F')
+
+
+# Statistical analysis: Phase with medication
+cat('--------------------------\nAdvice Taking * phase with medication\n--------------------------')
+m_choice = lmer(AT ~ group*phase + wm_z + chlor_eq + fluox_eq + age_z +(1|subjects), data = data_long_choice)
+Anova(m_choice, type = 'III', test.statistic = 'F')
+
+cat('--------------------------\nTest for normality\n--------------------------')
+shapiro.test(resid(m_choice))
+
+cat('--------------------------\nPosthoc tests\n--------------------------')
+cat('----------------------\nHC vs CHR-P\n----------------------')
+m_choice_hc_chr = lmer(AT ~ group*phase  + wm_z + chlor_eq + fluox_eq + age_z +(1|subjects), data = data_long_choice[data_long_choice$group!='FEP',])
+Anova(m_choice_hc_chr, type = 'III', test.statistic = 'F')
+
+cat('----------------------\nHC vs FEP\n----------------------')
+m_choice_hc_fep = lmer(AT ~ group*phase  + wm_z + chlor_eq + fluox_eq + age_z +(1|subjects), data = data_long_choice[data_long_choice$group!='CHR-P',])
+Anova(m_choice_hc_fep, type = 'III', test.statistic = 'F')
+
+cat('----------------------\nFEP vs CHR-P\n----------------------')
+m_choice_chr_fep = lmer(AT ~ group*phase  + wm_z + chlor_eq + fluox_eq + age_z +(1|subjects), data = data_long_choice[data_long_choice$group!='HC',])
+Anova(m_choice_chr_fep, type = 'III', test.statistic = 'F')
+
+
 
 
 #---------------------------------------
 # Plot Ground Truth
 #---------------------------------------
-h1 = .872
-h2 = .9
-h3 = .925
-
 summary <- ddply(data_long_choice, .(group, phase), summarise, AT = mean(AT))
 
 windowsFonts(Calibri = windowsFont("Calibri"))
@@ -147,9 +166,7 @@ p1 <- ggplot(data_long_choice, aes(x = phase, y = AT, fill = group)) +
         axis.text.y = element_text(color='black'),
         axis.text.x = element_text(color='black'))
 p1
-# ggsave(paste0(root_save,'AT_per_phase_and_group.png'),
-#        width = 8, height = 8, dpi = 300,
-#        units = "cm")
+
 
 
 
@@ -165,9 +182,9 @@ AT_volatile_pred = rowMeans(probs[,trials_volatile],na.rm = T)
 
 
 # Prepare data
-data_wide_pred = data.frame(subjects, group, age_z, wm_z, antipsych, antidep, AT_stable_pred, AT_volatile_pred)
+data_wide_pred = data.frame(subjects, group, age_z, wm_z, chlor_eq, fluox_eq, AT_stable_pred, AT_volatile_pred)
 data_long_pred = melt(data_wide_pred,
-                 id.vars = c('subjects', 'group',  'age_z', 'wm_z', 'antipsych', 'antidep'),
+                 id.vars = c('subjects', 'group',  'age_z', 'wm_z', 'chlor_eq', 'fluox_eq'),
                  variable.name = 'phase',
                  value.name = 'AT')
 levels(data_long_pred$phase) = c('Stable', 'Volatile')
@@ -176,30 +193,53 @@ levels(data_long_pred$phase) = c('Stable', 'Volatile')
 #---------------------------------------
 # Statistical analysis: Phase
 #---------------------------------------
+# Statistical analysis: Phase
 cat('--------------------------\nAdvice Taking * phase\n--------------------------')
-m_pred = lmer(AT ~ group*phase  + wm_z + antipsych + antidep + age_z +(1|subjects), data = data_long_pred)
+m_pred = lmer(AT ~ group*phase  + wm_z + age_z +(1|subjects), data = data_long_pred)
 Anova(m_pred, type = 'III', test.statistic = 'F')
 
 cat('--------------------------\nTest for normality\n--------------------------')
 shapiro.test(resid(m_pred))
 
 cat('--------------------------\nPosthoc tests\n--------------------------')
-m_pred_hc_chr = lmer(AT ~ group*phase  + wm_z + antipsych + antidep + age_z +(1|subjects), data = data_long_pred[data_long_pred$group!='FEP',])
+cat('----------------------\nHC vs CHR-P\n----------------------')
+m_pred_hc_chr = lmer(AT ~ group*phase  + wm_z + age_z +(1|subjects), data = data_long_pred[data_long_pred$group!='FEP',])
 Anova(m_pred_hc_chr, type = 'III', test.statistic = 'F')
 
-m_pred_hc_fep = lmer(AT ~ group*phase  + wm_z + antipsych + antidep + age_z +(1|subjects), data = data_long_pred[data_long_pred$group!='CHR-P',])
+cat('----------------------\nHC vs FEP\n----------------------')
+m_pred_hc_fep = lmer(AT ~ group*phase  + wm_z + age_z +(1|subjects), data = data_long_pred[data_long_pred$group!='CHR-P',])
 Anova(m_pred_hc_fep, type = 'III', test.statistic = 'F')
 
-m_pred_chr_fep = lmer(AT ~ group*phase  + wm_z + antipsych + antidep + age_z +(1|subjects), data = data_long_pred[data_long_pred$group!='HC',])
+cat('----------------------\nFEP vs CHR-P\n----------------------')
+m_pred_chr_fep = lmer(AT ~ group*phase  + wm_z + age_z +(1|subjects), data = data_long_pred[data_long_pred$group!='HC',])
+Anova(m_pred_chr_fep, type = 'III', test.statistic = 'F')
+
+
+# Statistical analysis: Phase with medication
+cat('--------------------------\nAdvice Taking * phase with medication\n--------------------------')
+m_pred = lmer(AT ~ group*phase  + wm_z + chlor_eq + fluox_eq + age_z +(1|subjects), data = data_long_pred)
+Anova(m_pred, type = 'III', test.statistic = 'F')
+
+cat('--------------------------\nTest for normality\n--------------------------')
+shapiro.test(resid(m_pred))
+
+cat('--------------------------\nPosthoc tests\n--------------------------')
+cat('----------------------\nHC vs CHR-P\n----------------------')
+m_pred_hc_chr = lmer(AT ~ group*phase  + wm_z + chlor_eq + fluox_eq + age_z +(1|subjects), data = data_long_pred[data_long_pred$group!='FEP',])
+Anova(m_pred_hc_chr, type = 'III', test.statistic = 'F')
+
+cat('----------------------\nHC vs FEP\n----------------------')
+m_pred_hc_fep = lmer(AT ~ group*phase  + wm_z + chlor_eq + fluox_eq + age_z +(1|subjects), data = data_long_pred[data_long_pred$group!='CHR-P',])
+Anova(m_pred_hc_fep, type = 'III', test.statistic = 'F')
+
+cat('----------------------\nFEP vs CHR-P\n----------------------')
+m_pred_chr_fep = lmer(AT ~ group*phase  + wm_z + chlor_eq + fluox_eq + age_z +(1|subjects), data = data_long_pred[data_long_pred$group!='HC',])
 Anova(m_pred_chr_fep, type = 'III', test.statistic = 'F')
 
 
 #---------------------------------------
 # Plot Model prediction
 #---------------------------------------
-h1 = .875
-h2 = .9
-h3 = .925
 summary <- ddply(data_long_pred, .(group, phase), summarise, AT = mean(AT))
 colors = c('HC' = '#ffeda0', 'CHR-P' = '#feb24c', 'FEP' = '#f03b20')
 colors = c('HC' = '#fe9929', 'CHR-P' = '#d95f0e', 'FEP' = '#993404') 
@@ -224,9 +264,6 @@ p2 <- ggplot(data_long_pred, aes(x = phase, y = AT, fill = group)) +
         axis.text.y = element_text(color='black'),
         axis.text.x = element_text(color='black'))
 p2
-# ggsave(paste0(root_save,'pred_AT_per_phase_and_group.png'),
-#        width = 8, height = 8, dpi = 300,
-#        units = "cm")
 
 
 #---------------------------------------

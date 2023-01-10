@@ -52,6 +52,8 @@ wm = data$DS_backward
 sex = factor(data$SocDem_sex)
 antipsych = factor(data$medication_antipsych_T0, levels = c(1,0), labels = c('y','n'))
 antidep = factor(data$medication_antidep_T0, levels = c(1,0), labels = c('y','n'))
+chlor_eq = data$chlor_eq_dose_T0
+fluox_eq = data$fluox_eq_dose_T0
 cannabis = factor(data$SocDem_cannabis_T0, levels = c(1,0), labels = c('y','n'))
 
 
@@ -139,6 +141,38 @@ cat('HC vs FEP')
 chisq.test(xtabs(~ antidep[group !='CHR'] + group[group !='CHR'], drop.unused.levels = T), correct = F)
 cat('HC vs CHR')
 chisq.test(xtabs(~ antidep[group !='FEP'] + group[group !='FEP'], drop.unused.levels = T), correct = F)
+
+
+# Chlorpromazine equivalent doses
+hist(chlor_eq)
+describeBy(chlor_eq, group)
+quantile(chlor_eq[group=='HC'], probs = c(.25,.75), na.rm = T)
+quantile(chlor_eq[group=='CHR'], probs = c(.25,.75), na.rm = T)
+quantile(chlor_eq[group=='FEP'], probs = c(.25,.75), na.rm = T)
+res = kruskal.test(chlor_eq, group)
+eta_squared = res$statistic/(sum(!is.na(chlor_eq))-1)
+res
+eta_squared
+pairwise.wilcox.test(chlor_eq, group, p.adjust.method = 'bonferroni')
+
+
+# Fluxoetine equivalent doses
+hist(fluox_eq)
+describeBy(fluox_eq, group)
+quantile(fluox_eq[group=='HC'], probs = c(.25,.75), na.rm = T)
+quantile(fluox_eq[group=='CHR'], probs = c(.25,.75), na.rm = T)
+quantile(fluox_eq[group=='FEP'], probs = c(.25,.75), na.rm = T)
+res = kruskal.test(fluox_eq, group)
+eta_squared = res$statistic/(sum(!is.na(fluox_eq))-1)
+res
+eta_squared
+pairwise.wilcox.test(fluox_eq, group, p.adjust.method = 'bonferroni')
+
+# WM
+hist(wm)
+describeBy(wm, group)
+Anova(lm(wm~group), type = 'III', test.statistic = 'F')
+pairwise.t.test(wm, group, p.adjust.method = 'bonferroni', paired = F)
 
 
 # Cannabis
