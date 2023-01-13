@@ -47,6 +47,7 @@ function [posterior,out] = compi_VBA_groupBMC(L,options)
 %           .r/a: family 'posterior counts' and attributions.
 
 [K,n] = size(L);
+rng(999); % to ensure that results reproduce exactly
 
 %-- fill in options with defaults if needed
 options.tStart = tic;
