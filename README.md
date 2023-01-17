@@ -4,14 +4,14 @@ Code pertaining to the computational modelling analysis for the paper:
 
 "Aberrant perception of environmental volatility in emerging psychosis"
 
-Hauke, Wobmann, Andreou, Mackintosh, de Bock, Sterzer, Borgwardt, Roth, & Diaconescu (2022)
+Hauke, Wobmann, Andreou, Mackintosh, de Bock, Karvelis, Adams, Sterzer, Borgwardt, Roth, & Diaconescu (2022)
 
 
 Members of the project:
 ---------------
-- Supervisor: Andreea Diaconescu, Daniel Hauke
+- Supervisor: Andreea O. Diaconescu, Daniel J. Hauke
 - Sponsor: Andreea Diaconescu
-- Contributors: Michelle Wobmann, Christina Andreou, Amatya Mackintosh, Renate de Bock, Povilas Karvelis, Rick Adams, Philipp Sterzer, Stefan Borgwardt, Volker Roth
+- Contributors: Michelle Wobmann, Christina Andreou, Amatya Mackintosh, Renate de Bock, Povilas Karvelis, Rick A. Adams, Philipp Sterzer, Stefan Borgwardt, Volker Roth
 - Tester for Reproducible Research: Povilas Karvelis
 
 Behavior of 56 participants (3 Groups: Healthy controls, Individuals at clinical high risk for psychosis, and first-episode psychosis patients) was assessed during a social learning task and modelled to investigate the computational mechanisms underlying paranoid delusions in early psychosis.
