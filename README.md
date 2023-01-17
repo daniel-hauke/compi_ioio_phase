@@ -9,7 +9,7 @@ Hauke, Wobmann, Andreou, Mackintosh, de Bock, Karvelis, Adams, Sterzer, Borgward
 
 Members of the project
 ---------------
-- Supervisor: Andreea O. Diaconescu, Daniel J. Hauke
+- Supervision: Andreea O. Diaconescu, Daniel J. Hauke
 - Sponsor: Andreea O. Diaconescu
 - Contributors: Michelle Wobmann, Christina Andreou, Amatya Mackintosh, Renate de Bock, Povilas Karvelis, Rick A. Adams, Philipp Sterzer, Stefan Borgwardt, Volker Roth
 - Tester for Reproducible Research: Povilas Karvelis
