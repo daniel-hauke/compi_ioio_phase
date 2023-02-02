@@ -65,8 +65,6 @@ for idx_m = 1: length(options.hgf.models)
                 '\kappa_{2}','\omega_{2}','\zeta','\nu'};
         end
         
-        %         figure('name', options.hgf.model_names{idx_m},...
-        %             'units', 'normalized', 'outerposition', [0 0 1 1], 'Visible', 'on');
         figure('name', options.hgf.model_names{idx_m},...
             'units', 'normalized', 'outerposition', [0 0 1 1], 'Visible', 'on');
         cmap = colormap('prism');
@@ -79,14 +77,6 @@ for idx_m = 1: length(options.hgf.models)
                 p_verb = ['p = ' num2str(round(p,3))];
             end
             
-%             if n_params > 6
-%                 subplot(ceil(n_params/3),3,i_p)
-%             else
-%                 subplot(ceil(n_params/2),2,i_p)
-%             end
-%             scatter(params(:,i_p), sim_params(:,i_p), 14,...
-%                 'MarkerFaceColor', cmap(i_p,:),...
-%                 'MarkerEdgeColor', 'k')
             subplot(2,4,i_p)
             scatter(params(:,i_p), sim_params(:,i_p), 14,...
                 'MarkerFaceColor', [.2 .2 .2],...
@@ -97,8 +87,11 @@ for idx_m = 1: length(options.hgf.models)
                 'FontSize', 12, 'FontWeight', 'bold', 'Units', 'normalized');
             xlabel('simulated', 'FontWeight', 'bold', 'FontSize', 28, 'Color', 'k');
             ylabel('recovered', 'FontWeight', 'bold', 'FontSize', 28, 'Color', 'k');
-            xlim([min(params(:,i_p))-.1*range(params(:,i_p)) max(params(:,i_p))+.1*range(params(:,i_p))]);
-            ylim([min(sim_params(:,i_p))-.1*range(sim_params(:,i_p)) max(sim_params(:,i_p))]+.1*range(sim_params(:,i_p)));
+            xmin = min(min(params(:,i_p)), min(sim_params(:,i_p)));
+            xmax = max(max(params(:,i_p)), max(sim_params(:,i_p)));
+            xrange = max(range(params(:,i_p)), range(sim_params(:,i_p)));
+            xlim([xmin-.1*xrange xmax+.1*xrange]);
+            ylim(xlim);
             lsline;
             title(param_names{i_p}, 'FontWeight', 'bold', 'FontSize', 28, 'Color', 'k')
         end
