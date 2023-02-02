@@ -17,8 +17,7 @@ pacman::p_load(xlsx,
 # Load data
 #-----------------------------------------
 # Adapt project root to the project root on your computer
-#root_project = 'C:/projects/compi_ioio_phase/'
-root_project = 'C:/Users/danie/Desktop/compi_ioio_phase/'
+root_project = 'C:/projects/compi_ioio_phase/'
 
 # Get data root
 root_data    = paste0(root_project, 'data/clinical/')

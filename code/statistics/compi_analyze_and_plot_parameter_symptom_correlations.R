@@ -17,8 +17,7 @@ pacman::p_load(xlsx,
 # Load data
 #-----------------------------------------
 # Adapt project root to the project root on your computer
-#root_project = 'C:/projects/compi_ioio_phase/'
-root_project = 'C:/Users/danie/Desktop/compi_ioio_phase/'
+root_project = 'C:/projects/compi_ioio_phase/'
 
 # Get data root
 root_clinic  = paste0(root_project, 'data/clinical/')
@@ -39,6 +38,7 @@ data_clinic = read.xlsx(paste0(root_clinic, fname_clinic,'.xlsx'),
                      as.data.frame = T, 
                      header = T,
                      sheetIndex = 1)
+
 
 # check if IDs match
 data_param = data_param[order(data_param$subject),] # order subjects to match IDs
@@ -101,7 +101,7 @@ n.symptoms = dim(PANSS)[2]
 n.comp = n.params * n.symptoms
 
 p = vector(mode = 'numeric', length = n.comp)
-tau = vector(mode = 'numeric', length = n.comp)
+rho = vector(mode = 'numeric', length = n.comp)
 parameter = vector(mode = 'character', length = n.comp)
 symptom = vector(mode = 'character', length = n.comp)
 
@@ -112,7 +112,7 @@ for (i in 1:n.params){
     cat(paste0('\n---------------------\n ',colnames(PANSS)[j], '\n---------------------\n'))
     res = cor.test(PANSS[,j], params[,i], method ="kendall")
     p[c] = res$p.value
-    tau[c] = res$estimate
+    rho[c] = res$estimate
     parameter[c] = colnames(params)[i]
     symptom[c] = colnames(PANSS)[j]
     print(res)
@@ -128,7 +128,7 @@ sign.fdr = as.numeric(p.fdr < 0.05)
 sign.bf = as.numeric(p.bf < 0.05)
 
 cat(paste0('\n---------------------------\nSummary\n---------------------------'))
-print(data.frame(parameter, symptom, tau, p, p.fdr, p.bf, sign, sign.fdr, sign.bf), row.names = F)
+print(data.frame(parameter, symptom, rho, p, p.fdr, p.bf, sign, sign.fdr, sign.bf), row.names = F)
 
 
 
@@ -208,7 +208,7 @@ n.symptoms = dim(pcl)[2]
 n.comp = n.params * n.symptoms
 
 p = vector(mode = 'numeric', length = n.comp)
-tau = vector(mode = 'numeric', length = n.comp)
+rho = vector(mode = 'numeric', length = n.comp)
 parameter = vector(mode = 'character', length = n.comp)
 symptom = vector(mode = 'character', length = n.comp)
 
@@ -220,7 +220,7 @@ for (i in 1:n.params){
     res = cor.test(pcl[,j], params[,i], method ="kendall")
     # res = kruskal.test(Y[,j] ~ m_3)
     p[c] = res$p.value
-    tau[c] = res$estimate
+    rho[c] = res$estimate
     parameter[c] = colnames(params)[i]
     symptom[c] = colnames(pcl)[j]
     print(res)
@@ -236,7 +236,7 @@ sign.fdr = as.numeric(p.fdr < 0.05)
 sign.bf = as.numeric(p.bf < 0.05)
 
 cat(paste0('\n---------------------------\nSummary\n---------------------------'))
-print(data.frame(parameter, symptom, tau, p, p.fdr, p.bf, sign, sign.fdr, sign.bf), row.names = F)
+print(data.frame(parameter, symptom, rho, p, p.fdr, p.bf, sign, sign.fdr, sign.bf), row.names = F)
 
 
 

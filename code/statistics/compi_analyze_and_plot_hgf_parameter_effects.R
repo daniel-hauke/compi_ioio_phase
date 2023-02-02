@@ -17,8 +17,7 @@ pacman::p_load(xlsx,
 # Load data
 #---------------------------------------
 # Adapt project root to the project root on your computer
-#root_project = 'C:/projects/compi_ioio_phase/'
-root_project = 'C:/Users/danie/Desktop/compi_ioio_phase/'
+root_project = 'C:/projects/compi_ioio_phase/'
 
 # Get data roots and save directory
 root_data = paste0(root_project, 'results/diag_hgf/ms1/m3/')
@@ -40,7 +39,7 @@ group = factor(temp [,2],
                labels = c('HC','CHR-P','FEP'))
 
 # Create data frame
-Y = data.frame(temp[,9:dim(temp)[2]])
+Y = data.frame(temp[,7:dim(temp)[2]])
 
 # Run some checks
 head(Y)

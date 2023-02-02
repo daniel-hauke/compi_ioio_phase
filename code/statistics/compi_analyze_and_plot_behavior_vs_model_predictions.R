@@ -22,7 +22,8 @@ pacman::p_load(xlsx,
 # Load data
 #---------------------------------------
 # Adapt project root to the project root on your computer
-root_project = 'C:/projects/compi_ioio_phase/'
+#root_project = 'C:/projects/compi_ioio_phase/'
+root_project = 'C:/Users/danie/Desktop/compi_ioio_phase/'
 
 
 # Get data roots and save directory
@@ -51,6 +52,7 @@ temp = read.xlsx(paste0(root_probs, fname_probs,'.xlsx'),
                      as.data.frame = T, 
                      header = T,
                      sheetIndex = 1)
+temp[temp == -999] = NA
 probs = temp[,9:ncol(temp)]
 
 
@@ -106,14 +108,19 @@ cat('--------------------------\nPosthoc tests\n--------------------------')
 cat('----------------------\nHC vs CHR-P\n----------------------')
 m_choice_hc_chr = lmer(AT ~ group*phase  + wm_z + age_z +(1|subjects), data = data_long_choice[data_long_choice$group!='FEP',])
 Anova(m_choice_hc_chr, type = 'III', test.statistic = 'F')
+p.adjust(unlist(Anova(m_choice_hc_chr, type = 'III', test.statistic = 'F'))[24], method = 'bonferroni', n = 3)
 
 cat('----------------------\nHC vs FEP\n----------------------')
 m_choice_hc_fep = lmer(AT ~ group*phase  + wm_z + age_z +(1|subjects), data = data_long_choice[data_long_choice$group!='CHR-P',])
 Anova(m_choice_hc_fep, type = 'III', test.statistic = 'F')
+p.adjust(unlist(Anova(m_choice_hc_fep, type = 'III', test.statistic = 'F'))[24], method = 'bonferroni', n = 3)
 
 cat('----------------------\nFEP vs CHR-P\n----------------------')
 m_choice_chr_fep = lmer(AT ~ group*phase  + wm_z + age_z +(1|subjects), data = data_long_choice[data_long_choice$group!='HC',])
 Anova(m_choice_chr_fep, type = 'III', test.statistic = 'F')
+p.adjust(unlist(Anova(m_choice_chr_fep, type = 'III', test.statistic = 'F'))[24], method = 'bonferroni', n = 3)
+
+
 
 
 # Statistical analysis: Phase with medication
@@ -128,14 +135,19 @@ cat('--------------------------\nPosthoc tests\n--------------------------')
 cat('----------------------\nHC vs CHR-P\n----------------------')
 m_choice_hc_chr = lmer(AT ~ group*phase  + wm_z + chlor_eq + fluox_eq + age_z +(1|subjects), data = data_long_choice[data_long_choice$group!='FEP',])
 Anova(m_choice_hc_chr, type = 'III', test.statistic = 'F')
+p.adjust(unlist(Anova(m_choice_hc_chr, type = 'III', test.statistic = 'F'))['Pr(>F)8'], method = 'bonferroni', n = 3)
 
 cat('----------------------\nHC vs FEP\n----------------------')
 m_choice_hc_fep = lmer(AT ~ group*phase  + wm_z + chlor_eq + fluox_eq + age_z +(1|subjects), data = data_long_choice[data_long_choice$group!='CHR-P',])
 Anova(m_choice_hc_fep, type = 'III', test.statistic = 'F')
+p.adjust(unlist(Anova(m_choice_hc_fep, type = 'III', test.statistic = 'F'))['Pr(>F)8'], method = 'bonferroni', n = 3)
+
 
 cat('----------------------\nFEP vs CHR-P\n----------------------')
 m_choice_chr_fep = lmer(AT ~ group*phase  + wm_z + chlor_eq + fluox_eq + age_z +(1|subjects), data = data_long_choice[data_long_choice$group!='HC',])
 Anova(m_choice_chr_fep, type = 'III', test.statistic = 'F')
+p.adjust(unlist(Anova(m_choice_chr_fep, type = 'III', test.statistic = 'F'))['Pr(>F)8'], method = 'bonferroni', n = 3)
+
 
 
 
@@ -151,6 +163,8 @@ colors = c('HC' = '#fe9929', 'CHR-P' = '#d95f0e', 'FEP' = '#993404')
 
 set.seed(555) # to fix jitter
 p1 <- ggplot(data_long_choice, aes(x = phase, y = AT, fill = group)) +
+  geom_linerange(y = 0.77, xmin = 0.5, xmax = 1.5, size = .5,  linetype='dotted') +
+  geom_linerange(y = 0.5, xmin = 1.5, xmax = 2.5, size = .5, linetype='dotted') +
   geom_boxplot(outlier.shape = NA) +
   geom_jitter(position = position_jitterdodge(dodge.width = 0.75, jitter.width = .3), alpha = .3) +
   labs(title="Ground Truth", y = "Advice Taking", x = 'Phase') +
@@ -205,14 +219,17 @@ cat('--------------------------\nPosthoc tests\n--------------------------')
 cat('----------------------\nHC vs CHR-P\n----------------------')
 m_pred_hc_chr = lmer(AT ~ group*phase  + wm_z + age_z +(1|subjects), data = data_long_pred[data_long_pred$group!='FEP',])
 Anova(m_pred_hc_chr, type = 'III', test.statistic = 'F')
+p.adjust(unlist(Anova(m_pred_hc_chr, type = 'III', test.statistic = 'F'))[24], method = 'bonferroni', n = 3)
 
 cat('----------------------\nHC vs FEP\n----------------------')
 m_pred_hc_fep = lmer(AT ~ group*phase  + wm_z + age_z +(1|subjects), data = data_long_pred[data_long_pred$group!='CHR-P',])
 Anova(m_pred_hc_fep, type = 'III', test.statistic = 'F')
+p.adjust(unlist(Anova(m_pred_hc_fep, type = 'III', test.statistic = 'F'))[24], method = 'bonferroni', n = 3)
 
 cat('----------------------\nFEP vs CHR-P\n----------------------')
 m_pred_chr_fep = lmer(AT ~ group*phase  + wm_z + age_z +(1|subjects), data = data_long_pred[data_long_pred$group!='HC',])
 Anova(m_pred_chr_fep, type = 'III', test.statistic = 'F')
+p.adjust(unlist(Anova(m_pred_chr_fep, type = 'III', test.statistic = 'F'))[24], method = 'bonferroni', n = 3)
 
 
 # Statistical analysis: Phase with medication
@@ -227,14 +244,17 @@ cat('--------------------------\nPosthoc tests\n--------------------------')
 cat('----------------------\nHC vs CHR-P\n----------------------')
 m_pred_hc_chr = lmer(AT ~ group*phase  + wm_z + chlor_eq + fluox_eq + age_z +(1|subjects), data = data_long_pred[data_long_pred$group!='FEP',])
 Anova(m_pred_hc_chr, type = 'III', test.statistic = 'F')
+p.adjust(unlist(Anova(m_pred_hc_chr, type = 'III', test.statistic = 'F'))[24], method = 'bonferroni', n = 3)
 
 cat('----------------------\nHC vs FEP\n----------------------')
 m_pred_hc_fep = lmer(AT ~ group*phase  + wm_z + chlor_eq + fluox_eq + age_z +(1|subjects), data = data_long_pred[data_long_pred$group!='CHR-P',])
 Anova(m_pred_hc_fep, type = 'III', test.statistic = 'F')
+p.adjust(unlist(Anova(m_pred_hc_fep, type = 'III', test.statistic = 'F'))[24], method = 'bonferroni', n = 3)
 
 cat('----------------------\nFEP vs CHR-P\n----------------------')
 m_pred_chr_fep = lmer(AT ~ group*phase  + wm_z + chlor_eq + fluox_eq + age_z +(1|subjects), data = data_long_pred[data_long_pred$group!='HC',])
 Anova(m_pred_chr_fep, type = 'III', test.statistic = 'F')
+p.adjust(unlist(Anova(m_pred_chr_fep, type = 'III', test.statistic = 'F'))[24], method = 'bonferroni', n = 3)
 
 
 #---------------------------------------
@@ -246,6 +266,8 @@ colors = c('HC' = '#fe9929', 'CHR-P' = '#d95f0e', 'FEP' = '#993404')
 
 set.seed(555) # to fix jitter
 p2 <- ggplot(data_long_pred, aes(x = phase, y = AT, fill = group)) +
+  geom_linerange(y = 0.77, xmin = 0.5, xmax = 1.5, size = .5,  linetype='dotted') +
+  geom_linerange(y = 0.5, xmin = 1.5, xmax = 2.5, size = .5, linetype='dotted') +
   geom_boxplot(outlier.shape = NA) +
   geom_jitter(position = position_jitterdodge(dodge.width = 0.75, jitter.width = .3), alpha = .3) +
   labs(title="Model Prediction", y = "Advice Taking", x = 'Phase') +
