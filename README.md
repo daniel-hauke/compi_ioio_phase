@@ -25,7 +25,7 @@ Getting Started (General)
 ---------------
 1.  Please, clone this repository. You can do so using the following command:
 ```
-git clone https://github.com/Murdugan/compi_ioio_phase.git
+git clone https://github.com/daniel-hauke/compi_ioio_phase.git
 ```
 
 Downloading the data
