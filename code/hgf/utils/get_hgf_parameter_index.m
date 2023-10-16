@@ -45,6 +45,7 @@ switch parameter
         parameter_idx = 16;
         parameter_name = '\\omega_2';
         parameter_array = [-8 -6 -4 -2];
+        %parameter_array = [-6 -4 -2];
         
     case 'th'
         parameter_idx = 17;

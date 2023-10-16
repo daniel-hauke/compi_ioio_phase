@@ -49,8 +49,9 @@ hold on; plot(vol_struct, 'k:'); hold off; % Plot volatility structure
 % 'phi3'    -> Drift rate at third level
 % 'mu30'    -> Prior mean on expected volatility
 
-%parameter = 'm3'; % Change the parameter you want to investigate
+parameter = 'm3'; % Change the parameter you want to investigate
 parameter = 'om2'; % Change the parameter you want to investigate
+parameter = 'ka2'; % Change the parameter you want to investigate
 [parameter_idx, parameter_name, parameter_array] = get_hgf_parameter_index(parameter);
 
 % Simulate trajectories for different parameter values, while keeping the
