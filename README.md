@@ -30,7 +30,7 @@ git clone https://github.com/daniel-hauke/compi_ioio_phase.git
 
 Downloading the data
 ---------------
-1.  Please, download the data from: (will follow).
+1.  Please, download the data from: https://osf.io/6rdjc/
 2.  Copy the data into the compi_ioio_phase folder using the following structure:
 ```
 compi_ioio_phase
