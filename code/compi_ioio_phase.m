@@ -48,38 +48,3 @@ t = toc;
 fprintf('\n===\n\t Simulations done in %s (HH:MM:SS)!\n\n', datestr(datenum(0,0,0,0,0,t),'HH:MM:SS'));
 
 
-
-%% Supplementary Analyses
-% Supplementary Analysis I:
-% Comparing original model space of the paper to model space where mu3 was 
-% removed from the response model to decorrelate m3 and decision noise nu.
-
-model_space = 2;
-options = compi_ioio_hgf_options(options, model_space);
-
-% Fit HGF models
-fprintf('\n===\n\t Running the first level analysis:\n\n');
-loop_fit_hgf(options);
-
-% Perform Bayesian family comparison
-fprintf('\n===\n\t Performing Bayesian model selection:\n\n');
-compi_hgf_bfc(options);
-
-
-% Supplementary Analysis II:
-% Comparing original model space of the paper to model space where decision 
-% noise nu was removed from the response model to decorrelate m3 and 
-% decision noise nu.
-
-model_space = 3;
-options = compi_ioio_hgf_options(options, model_space);
-
-% Fit HGF models
-fprintf('\n===\n\t Running the first level analysis:\n\n');
-loop_fit_hgf(options);
-
-% Perform Bayesian family comparison
-fprintf('\n===\n\t Performing Bayesian model selection:\n\n');
-compi_hgf_bfc(options);
-
-
