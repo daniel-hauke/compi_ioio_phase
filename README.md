@@ -1,10 +1,10 @@
-Aberrant perception of environmental volatility in emerging psychosis
+Altered perception of environmental volatility in emerging psychosis
 ===============
 Code pertaining to the computational modelling analysis for the paper: 
 
-"Aberrant perception of environmental volatility in emerging psychosis"
+"Altered perception of environmental volatility in emerging psychosis"
 
-Hauke, Wobmann, Andreou, Mackintosh, de Bock, Karvelis, Adams, Sterzer, Borgwardt, Roth, & Diaconescu (2022)
+Hauke, Wobmann, Andreou, Mackintosh, de Bock, Karvelis, Adams, Sterzer, Borgwardt, Roth, & Diaconescu (2023)
 
 
 Members of the project
@@ -30,7 +30,7 @@ git clone https://github.com/daniel-hauke/compi_ioio_phase.git
 
 Downloading the data
 ---------------
-1.  Please, download the data from: (will follow).
+1.  Please, download the data from: https://osf.io/6rdjc/
 2.  Copy the data into the compi_ioio_phase folder using the following structure:
 ```
 compi_ioio_phase
