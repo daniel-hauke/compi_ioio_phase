@@ -38,7 +38,7 @@ for idx_m = 1:n_models
     
     % Get parameters
     fprintf('\n Collecting parameters...');
-    [params, grand_cor] = collect_all_estimated_hgf_params(files);
+    params = collect_all_estimated_hgf_params(files);
     
     
     %% Generate diagnostic plots
@@ -49,8 +49,16 @@ for idx_m = 1:n_models
     % Histograms sorted by group
     plot_grouped_parameter_histogram(params, param_overview.names, groups, save_path)
     
-    % Plot grand parameter correlation
-    plot_grand_corr(grand_cor, param_overview.names, save_path);
+    % Plot grand parameter correlation based on empirical estimates
+    grand_cor = corrcoef(params);
+    if idx_m == 3
+        param_names = {'\mu_{2}^{(0)}','\mu_{3}^{(0)}','m_3',...
+        '\kappa_{2}','\omega_{2}','\zeta','\nu'};
+        plot_grand_corr(grand_cor, param_names, fullfile(options.roots.figures, 'grand_corr_parameter.png'));
+        plot_grand_corr(grand_cor, param_names, fullfile(save_path, 'grand_corr_parameter.png'));
+    else
+        plot_grand_corr(grand_cor, param_overview.names, fullfile(save_path, 'grand_corr_parameter.png'));
+    end
     
     
     %% Run preliminary statistics
