@@ -1,10 +1,10 @@
-Aberrant perception of environmental volatility in emerging psychosis
+Altered perception of environmental volatility in emerging psychosis
 ===============
 Code pertaining to the computational modelling analysis for the paper: 
 
-"Aberrant perception of environmental volatility in emerging psychosis"
+"Altered perception of environmental volatility in emerging psychosis"
 
-Hauke, Wobmann, Andreou, Mackintosh, de Bock, Karvelis, Adams, Sterzer, Borgwardt, Roth, & Diaconescu (2022)
+Hauke, Wobmann, Andreou, Mackintosh, de Bock, Karvelis, Adams, Sterzer, Borgwardt, Roth, & Diaconescu (2023)
 
 
 Members of the project
