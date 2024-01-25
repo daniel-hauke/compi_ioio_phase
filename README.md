@@ -4,7 +4,7 @@ Code pertaining to the computational modelling analysis for the paper:
 
 "Altered perception of environmental volatility in emerging psychosis"
 
-Hauke, Wobmann, Andreou, Mackintosh, de Bock, Karvelis, Adams, Sterzer, Borgwardt, Roth, & Diaconescu (2023)
+Hauke, Wobmann, Andreou, Mackintosh, de Bock, Karvelis, Adams, Sterzer, Borgwardt, Roth, & Diaconescu (2024)
 
 
 Members of the project
